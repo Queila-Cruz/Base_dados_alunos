@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iguape - História, Cultura e Natureza</title>
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VARIÁVEIS DE DESIGN & RESET
+       ========================================================================== */
+    :root {
+      --primary: #1e3a8a;       /* Azul oceano profundo */
+      --primary-accent: #0284c7;/* Azul claro vibrante */
+      --secondary: #d97706;     /* Terracota / Ouro colonial */
+      --bg-dark: #0f172a;       /* Fundo do header e footers */
+      --bg-light: #f8fafc;      /* Fundo principal da página */
+      --card-bg: #ffffff;       /* Fundo dos cartões */
+      --text-main: #334155;     /* Texto legível */
+      --text-muted: #64748b;    /* Texto secundário */
+      --radius: 16px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cinzel', serif;
+    }
+
+    /* ==========================================================================
+       NAVBAR
+       ========================================================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand span {
+      color: var(--secondary);
+    }
+
+    .nav-stats {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+
+    .stat-badge {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 58, 138, 0.85)),
+                  url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 6rem 1.5rem 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      background: rgba(217, 119, 6, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(217, 119, 6, 0.4);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      max-width: 650px;
+      color: #cbd5e1;
+      margin-bottom: 2rem;
+    }
+
+    /* Search & Filter Container */
+    .filter-wrapper {
+      width: 100%;
+      max-width: 800px;
+      background: white;
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 0.85rem 1.2rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .search-bar:focus {
+      border-color: var(--primary-accent);
+    }
+
+    .category-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      background: #f1f5f9;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* ==========================================================================
+       GRID DE CURIOSIDADES
+       ========================================================================== */
+    .container {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      border: 1px solid #f1f5f9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    .card-category {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+
+    .cat-historia { background: #e0f2fe; color: #0369a1; }
+    .cat-natureza { background: #dcfce7; color: #15803d; }
+    .cat-cultura  { background: #fef3c7; color: #b45309; }
+
+    .card h3 {
+      font-size: 1.35rem;
+      color: var(--bg-dark);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 1rem;
+    }
+
+    .btn-read {
+      background: transparent;
+      border: none;
+      color: var(--primary-accent);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .btn-read:hover {
+      color: var(--primary);
+      gap: 0.5rem;
+    }
+
+    /* Mensagem quando nenhum resultado é encontrado */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    /* ==========================================================================
+       MODAL DE DETALHES
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 600px;
+      width: 100%;
+      padding: 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      transform: translateY(20px);
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: #f1f5f9;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      background: #e2e8f0;
+      color: var(--bg-dark);
+    }
+
+    .modal-body h3 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: var(--bg-dark);
+    }
+
+    .modal-body p {
+      color: var(--text-main);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      background: var(--bg-dark);
+      color: #94a3b8;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      margin-top: 5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer p {
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVIDADE
+       ========================================================================== */
+    @media (max-width: 640px) {
+      .hero { padding: 4rem 1rem 3rem; }
+      .nav-stats { display: none; }
+      .modal-content { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE NAVEGAÇÃO -->
+  <nav class="navbar">
+    <a href="#" class="brand">Iguape <span>Curiosa</span></a>
+    <div class="nav-stats">
+      <span>Fundada em <strong>1538</strong></span>
+      <span class="stat-badge">Litoral Sul SP</span>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <span class="hero-tag">Patrimônio Histórico Nacional</span>
+    <h1>Tesouros Escondidos de Iguape</h1>
+    <p>Explore os fatos mais fascinantes, histórias centenárias e segredos ecológicos da cidade mais antiga do Estado de São Paulo.</p>
+
+    <!-- ÁREA DE FILTRO & BUSCA -->
+    <div class="filter-wrapper">
+      <input type="text" id="searchInput" class="search-bar" placeholder="Pesquise por uma curiosidade (ex: Ouro, Basílica, Juréia)...">
+      <div class="category-buttons">
+        <button class="cat-btn active" data-category="todos">Todas</button>
+        <button class="cat-btn" data-category="historia">História</button>
+        <button class="cat-btn" data-category="natureza">Natureza</button>
+        <button class="cat-btn" data-category="cultura">Cultura & Tradição</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- GRID DE CURIOSIDADES -->
+  <main class="container">
+    <div class="grid" id="cardsGrid">
+      <!-- Inserido dinamicamente via JS -->
+    </div>
+
+    <div class="no-results" id="noResults">
+      <h3>Nenhuma curiosidade encontrada</h3>
+      <p>Tente buscar por termos diferentes ou selecione outra categoria.</p>
+    </div>
+  </main>
+
+  <!-- MODAL DE DETALHES -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModal">&times;</button>
+      <div class="modal-body" id="modalBody">
+        <!-- Conteúdo preenchido dinamicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <p>&copy; 2026 Iguape Curiosa - Desenvolvido com HTML5, CSS3 e Vanilla JavaScript.</p>
+  </footer>
+
+  <!-- SCRIPT JAVASCRIPT -->
+  <script>
+    /* ==========================================================================
+       BASE DE DADOS DE CURIOSIDADES DE IGUAPE
+       ========================================================================== */
+    const curiosidades = [
+      {
+        id: 1,
+        titulo: "Fundação Anterior a São Paulo",
+        categoria: "historia",
+        resumo: "Iguape é considerada uma das cidades mais antigas do Brasil, fundada por volta de 1538.",
+        detalhes: "Embora a data exata de povoamento remonte a 1538 com o povoador espanhol Ruy Garcia Mosquera, a fundação de Iguape antecede até mesmo a capital paulista (1554). O município guarda um dos acervos arquitetônicos coloniais mais preservados do Estado de São Paulo."
+      },
+      {
+        id: 2,
+        titulo: "O Primeiro Ouro do Brasil",
+        categoria: "historia",
+        resumo: "Muito antes de Minas Gerais, o ouro brasileiro começou a ser fundido e tributado em Iguape.",
+        detalhes: "Foi em Iguape que funcionou a primeira Casa de Fundição do Brasil, por volta do século XVII. O ouro retirado das minas do Vale do Ribeira era fundido e carimbado com o selo real português antes de seguir para a Europa."
+      },
+      {
+        id: 3,
+        titulo: "Basílica do Senhor Bom Jesus",
+        categoria: "cultura",
+        resumo: "Uma das maiores estruturas construídas em pedra de cantaria do litoral brasileiro.",
+        detalhes: "Edificada no século XIX com blocos de pedra trazidos de Portugal como lastro de navios, a Basílica atrai milhares de peregrinos todos os anos durante a tradicional Festa do Senhor Bom Jesus de Iguape em agosto."
+      },
+      {
+        id: 4,
+        titulo: "Estação Ecológica Juréia-Itatins",
+        categoria: "natureza",
+        resumo: "Abriga um dos trechos de Mata Atlântica mais bem preservados do planeta.",
+        detalhes: "Grande parte do território de Iguape é protegido por esta reserva ambiental de importância internacional. A área abriga espécies raras e ameaçadas da fauna e flora brasileira, além de cachoeiras e praias selvagens."
+      },
+      {
+        id: 5,
+        titulo: "A Lenda da Imagem Encontrada na Praia",
+        categoria: "cultura",
+        resumo: "A imagem do padroeiro foi encontrada no mar por indígenas em 1647.",
+        detalhes: "Segundo a tradição local, a imagem em tamanho natural do Senhor Bom Jesus foi encontrada na praia do Una por dois indígenas. Ao ser lavada na 'Fonte do Senhor', a pedra adquiriu marcas sagradas que até hoje são visitadas por fiéis."
+      },
+      {
+        id: 6,
+        titulo: "O Canal do Valo Grande",
+        categoria: "natureza",
+        resumo: "Uma obra de engenharia do século XIX que alterou drasticamente o ecossistema local.",
+        detalhes: "Aberto entre 1827 e 1852 para facilitar o transporte de arroz ao porto, o canal de apenas alguns metros de largura sofreu uma forte erosão e expandiu para mais de 300 metros, alterando o fluxo de água doce para a estuário e criando novos desafios ecológicos."
+      }
+    ];
+
+    /* ==========================================================================
+       LÓGICA DE APLICAÇÃO (VANILLA JS)
+       ========================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      const cardsGrid = document.getElementById('cardsGrid');
+      const searchInput = document.getElementById('searchInput');
+      const categoryButtons = document.querySelectorAll('.cat-btn');
+      const noResults = document.getElementById('noResults');
+      
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalBody = document.getElementById('modalBody');
+      const closeModal = document.getElementById('closeModal');
+
+      let currentCategory = 'todos';
+      let currentSearchTerm = '';
+
+      // Renderiza as curiosidades no Grid
+      function renderCards() {
+        cardsGrid.innerHTML = '';
+
+        const filteredData = curiosidades.filter(item => {
+          const matchesCategory = currentCategory === 'todos' || item.categoria === currentCategory;
+          const matchesSearch = item.titulo.toLowerCase().includes(currentSearchTerm) || 
+                                item.resumo.toLowerCase().includes(currentSearchTerm);
+          return matchesCategory && matchesSearch;
+        });
+
+        if (filteredData.length === 0) {
+          noResults.style.display = 'block';
+          return;
+        }
+
+        noResults.style.display = 'none';
+
+        filteredData.forEach(item => {
+          const card = document.createElement('article');
+          card.className = 'card';
+
+          const catName = item.categoria === 'historia' ? 'História' : 
+                          item.categoria === 'natureza' ? 'Natureza' : 'Cultura & Tradição';
+
+          card.innerHTML = `
+            <div>
+              <span class="card-category cat-${item.categoria}">${catName}</span>
+              <h3>${item.titulo}</h3>
+              <p>${item.resumo}</p>
+            </div>
+            <div class="card-footer">
+              <button class="btn-read" onclick="openModal(${item.id})">
+                Saber Mais <span>&rarr;</span>
+              </button>
+            </div>
+          `;
+          cardsGrid.appendChild(card);
+        });
+      }
+
+      // Evento de Filtro por Categoria
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          currentCategory = button.getAttribute('data-category');
+          renderCards();
+        });
+      });
+
+      // Evento de Busca em Tempo Real
+      searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value.toLowerCase().trim();
+        renderCards();
+      });
+
+      // Modal Controller
+      window.openModal = function(id) {
+        const item = curiosidades.find(c => c.id === id);
+        if (!item) return;
+
+        const catName = item.categoria === 'historia' ? 'História' : 
+                        item.categoria === 'natureza' ? 'Natureza' : 'Cultura & Tradição';
+
+        modalBody.innerHTML = `
+          <span class="card-category cat-${item.categoria}">${catName}</span>
+          <h3>${item.titulo}</h3>
+          <p>${item.detalhes}</p>
+        `;
+        modalOverlay.classList.add('active');
+      };
+
+      closeModal.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+      });
+
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.classList.remove('active');
+        }
+      });
+
+      // Renderização Inicial
+      renderCards();
+    });
+  </script>
+</body>
+</html>
